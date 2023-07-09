@@ -3,9 +3,11 @@ require('dotenv').config();
 const serverPort = process.env.SERVER_PORT || 3002;
 const mongoDBUrl = process.env.MONGODB_URL;
 const defaultUserImagePath = process.env.DEFAULT_USER_IMAGE_PATH || "public/images/users/default.png";
+const jwtActivationKey = process.env.JWT_ACTIVATION_KEY || '2WSXZAQ1';
 
 module.exports = {
     serverPort,
     mongoDBUrl,
-    defaultUserImagePath
+    defaultUserImagePath,
+    jwtActivationKey
 }
