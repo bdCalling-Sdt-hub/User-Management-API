@@ -1,8 +1,9 @@
 const createError = require('http-errors');
-const fs = require('fs');
+const fs = require('fs').promises;
 const User = require('../models/userModel');
 const { successResponse } = require('./responseController');
 const { findWithId } = require('../services/findItem');
+const { deleteImage } = require('../helper/deleteImage');
 
 //Get all users
 const getUsers = async(req, res, next) => {
@@ -76,16 +77,8 @@ const deleteUserById = async (req, res, next) => {
         const user = await findWithId(User, id, options);
         
         const userImagePath = user.image;
-        fs.access(userImagePath, (err) => {
-            if(err){
-                console.error('Image does not exist');
-            }else{
-                fs.unlink(userImagePath, (err) => {
-                    if(err) throw err;
-                    console.log('User image was deleted');
-                })
-            }
-        });
+        deleteImage(userImagePath);
+        
         await User.findByIdAndDelete({_id: id, isAdmin: false})
 
         return successResponse(res, {
